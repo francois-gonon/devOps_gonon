@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  database:
+    image: my-database:1.0
+    build: ./base
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  backend:
+    image: simple-api:1.0
+    build: ./backend/simple-api
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  httpd:
+    image: my-httpd:1.0
+    build: ./httpd
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pgdata:
