@@ -11,10 +11,9 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - app-network
-
   backend:
     image: simple-api:1.0
-    build: ./backend/simple-api
+    build: ./backend/simpleapi
     depends_on:
       - database
     networks:
